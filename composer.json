@@ -2,6 +2,7 @@
     "name": "hittten/symfony-api-rest",
     "license": "MIT",
     "type": "project",
+    "description": "Symfony Api Rest",
     "autoload": {
         "psr-4": {
             "": "src/"
