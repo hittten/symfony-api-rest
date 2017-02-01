@@ -2,6 +2,7 @@
     "name": "hittten/symfony-api-rest",
     "license": "MIT",
     "type": "project",
+    "description": "Symfony Api Rest",
     "autoload": {
         "psr-4": {
             "": "src/"
@@ -33,6 +34,7 @@
         "friendsofsymfony/oauth-server-bundle": "dev-master",
         "friendsofsymfony/rest-bundle": "^2.1",
         "jms/serializer-bundle": "^1.1",
+        "jms/security-extra-bundle": "dev-master",
         "nelmio/cors-bundle": "^1.4"
     },
     "require-dev": {
@@ -49,7 +51,8 @@
         "doctrine/doctrine-fixtures-bundle": "^2.3",
         "escapestudios/symfony2-coding-standard": "~2.0",
         "phpmd/phpmd" : "@stable",
-        "behatch/contexts": "^2.5"
+        "behatch/contexts": "^2.5",
+        "sebastian/phpcpd": "^2.0"
     },
     "scripts": {
         "symfony-scripts": [

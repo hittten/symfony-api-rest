@@ -1,11 +1,25 @@
 # To get started with security, check out the documentation:
 # http://symfony.com/doc/current/security.html
+parameters:
+    oauth_token_url: /oauth/v2/token
+    oauth_auth_url: /oauth/v2/auth
+    oauth_auth_login_url: /oauth/v2/auth_login
+    oauth_auth_logout_url: /oauth/v2/auth_logout
+    oauth_check_url: /oauth/v2/auth_check
+
 security:
 
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        in_memory:
-            memory: ~
+        fos_userbundle:
+            id: fos_user.user_provider.username
+
+    encoders:
+        FOS\UserBundle\Model\UserInterface: sha512
+
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -13,12 +27,33 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        main:
-            anonymous: ~
-            # activate different ways to authenticate
+        doc:
+            pattern: ^/doc$
+            http_basic:
+                realm: "Secured area"
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+        oauth_token:
+            pattern:    ^/oauth/v2/token
+            security:   false
 
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+        oauth_authorize:
+            pattern:    ^/oauth/v2/auth
+            form_login:
+                provider: fos_userbundle
+                login_path: '%oauth_auth_login_url%'
+                check_path: '%oauth_check_url%'
+            logout:
+                path:   '%oauth_auth_logout_url%'
+                target: '%oauth_auth_login_url%'
+            anonymous:    true
+
+        api:
+            pattern:    ^/
+            fos_oauth:  true
+            stateless:  true
+            security:   true
+            anonymous:  false
+
+    access_control:
+        - { path: ^/oauth/v2/auth_login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: [ IS_AUTHENTICATED_FULLY ] }

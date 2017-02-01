@@ -1,0 +1,27 @@
+#Behat config
+#http://behat.org/en/latest/quick_start.html#installation
+default:
+    suites:
+        default:
+            type: symfony_bundle
+            bundle: AppBundle
+            contexts:
+                - AppBundle\Features\Context\ApiRestContext:
+                    oauthTokenUrl: '%%oauth_token_url%%'
+                    oauthAuthUrl: '%%oauth_auth_url%%'
+                - Behat\MinkExtension\Context\MinkContext
+                - behatch:json
+#                - behatch:browser
+#                - behatch:debug
+#                - behatch:system
+#                - behatch:table
+#                - behatch:rest
+#                - behatch:xml
+    extensions:
+        Behat\Symfony2Extension: ~              #doc: https://github.com/Behat/Symfony2Extension/blob/master/doc/index.rst
+        Sanpi\Behatch\Extension: ~              #doc: https://github.com/Behatch/contexts/blob/master/doc/index.rst
+        Behat\MinkExtension:                    #doc: https://github.com/Behat/MinkExtension/blob/master/doc/index.rst
+            base_url:  'http://symfony.api.dev'
+            sessions:
+                default:
+                    symfony2: ~

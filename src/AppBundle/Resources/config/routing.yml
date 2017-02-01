@@ -1,0 +1,7 @@
+#admin_user:
+#    type:     rest
+#    resource: "@AppBundle/Controller/Admin/AdminUsersController.php"
+
+users:
+    type:     rest
+    resource: "@AppBundle/Controller/UsersController.php"

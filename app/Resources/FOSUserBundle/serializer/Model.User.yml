@@ -1,0 +1,17 @@
+FOS\UserBundle\Model\User:
+    exclusion_policy: ALL
+    xml_root_name: user
+    properties:
+        username:
+            type: string
+            expose: true
+        email:
+            type: string
+            expose: true
+        enabled:
+            type: boolean
+            expose: true
+        roles:
+            type: array
+            accessor:
+                getter: getRoles

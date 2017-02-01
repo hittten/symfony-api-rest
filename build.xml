@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="app" default="install">
+    <property name="app_dir" value="./app"/>
+    <property name="bin_dir" value="./bin"/>
+    <property name="var_dir" value="./var"/>
+    <property name="vendor_bin_dir" value="./vendor/bin"/>
+
+    <target name="install" depends="clear, fixtures" description="First install after the first clone"/>
+
+    <target name="clear" depends="cache, logs, sessions" description="Clear cache, logs and sessions" />
+
+    <target name="cache" description="Erasing cache">
+        <echo msg="Erasing cache..."/>
+        <delete includeemptydirs="true">
+            <fileset dir="${var_dir}/cache">
+                <exclude name=".gitkeep"/>
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="logs" description="Erasing logs">
+        <echo msg="Erasing logs..."/>
+        <delete includeemptydirs="true">
+            <fileset dir="${var_dir}/logs">
+                <exclude name=".gitkeep"/>
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="sessions" description="Erasing sessions">
+        <echo msg="Erasing sessions..."/>
+        <delete includeemptydirs="true">
+            <fileset dir="${var_dir}/sessions">
+                <exclude name=".gitkeep"/>
+            </fileset>
+        </delete>
+    </target>
+
+    <target name="fixtures" depends="database" description="First install after the first clone">
+        <echo msg="Load doctrine fixtures..."/>
+        <exec passthru="true" checkreturn="true" command="${bin_dir}/console doctrine:fixtures:load --no-interaction"/>
+    </target>
+
+    <target name="database" description="Restarts the database">
+        <echo msg="Restarting database..."/>
+        <exec passthru="true" checkreturn="true" command="${bin_dir}/console doctrine:database:drop --force --if-exists"/>
+        <exec passthru="true" checkreturn="true" command="${bin_dir}/console doctrine:database:create"/>
+        <exec passthru="true" checkreturn="true" command="${bin_dir}/console doctrine:schema:update --force"/>
+    </target>
+
+    <target name="check" depends="phpcs, phpmd, phpcpd, security" description="Check entire code" />
+
+    <target name="phpcs" description="Check php code sniffer with Symfony 2 standard">
+        <echo msg="Checking php code sniffer"/>
+        <exec passthru="true" checkreturn="true" command="${vendor_bin_dir}/phpcs --extensions=php --standard=vendor/escapestudios/symfony2-coding-standard/Symfony2 src/"/>
+    </target>
+
+    <target name="phpmd" description="Check php mess detector with rules cleancode, codesize, controversial, design, naming, unusedcode">
+        <echo msg="Checking php mess detector"/>
+        <exec passthru="true" checkreturn="true" command="${vendor_bin_dir}/phpmd src/ text phpmd.xml"/>
+    </target>
+
+    <target name="phpcpd" description="Check php copy paste detector">
+        <echo msg="Checking php copy paste detector"/>
+        <exec passthru="true" checkreturn="true" command="${vendor_bin_dir}/phpcpd src/"/>
+    </target>
+
+    <target name="security" description="Check ">
+        <echo msg="Checking Symfony Security"/>
+        <exec passthru="true" checkreturn="true" command="${bin_dir}/console security:check"/>
+    </target>
+
+    <target name="vendors" depends="clear" description="Reinstall vendors">
+        <echo msg="Reinstalling vendors..."/>
+        <delete includeemptydirs="true">
+            <fileset dir="${app_dir}/config/parameters.yml"/>
+            <fileset dir="vendor"/>
+        </delete>
+        <exec passthru="true" checkreturn="true" command="composer install"/>
+    </target>
+</project>

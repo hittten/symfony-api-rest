@@ -1,0 +1,65 @@
+AppBundle\Entity\User:
+    admin:
+        firstName: <firstName()>
+        lastName: <lastName()>
+        username (unique): admin
+        plainPassword:  admin
+        email (unique): admin@domain.com
+        roles: ['ROLE_SUPER_ADMIN']
+        enabled: true
+    user:
+        firstName: <firstName()>
+        lastName: <lastName()>
+        username (unique): user
+        plainPassword:  user
+        email (unique): user@domain.com
+        roles: ['ROLE_USER']
+        enabled: true
+    user_{1..4}:
+        firstName: <firstName()>
+        lastName: <lastName()>
+        username (unique): <username()>
+        plainPassword:  <password()>
+        email (unique): <email()>
+        roles: ['ROLE_USER']
+        enabled: true
+
+AppBundle\Entity\Client:
+    oauth_client_all:
+        randomId: randomid_all
+        secret: secret_all
+        redirectUris:
+            - http://symfony.api.dev      # used with apache
+            - http://localhost:3000       # used with localhost gulp server
+            - http://symfony.api.dev:3000 # used with vagrant gulp server
+        allowedGrantTypes: ['client_credentials', 'authorization_code', 'password', 'refresh_token', 'token']
+
+AppBundle\Entity\AccessToken:
+    oauth_access_token_admin:
+        client: '@oauth_client_all'
+        user: '@admin'
+        token: "admin_token"
+        expiresAt: 2147483647
+        scope: null
+    oauth_access_token_user:
+        client: '@oauth_client_all'
+        user: '@user'
+        token: "user_token"
+        expiresAt: 2147483647
+        scope: null
+
+AppBundle\Entity\RefreshToken:
+    oauth_refresh_token_admin:
+        client: '@oauth_client_all'
+        user: '@admin'
+        token: "admin_refresh_token"
+        expiresAt: 2147483647
+        scope: null
+
+AppBundle\Entity\AuthCode:
+    oauth_auth_code_admin:
+        client: '@oauth_client_all'
+        token: "code_token"
+        redirectUri: http://localhost:3000
+        expiresAt: 2147483647
+        scope: null
