@@ -9,6 +9,7 @@ default:
                 - AppBundle\Features\Context\ApiRestContext:
                     oauthTokenUrl: '%%oauth_token_url%%'
                     oauthAuthUrl: '%%oauth_auth_url%%'
+                    oauthAuthLoginUrl: '%%oauth_auth_login_url%%'
                 - Behat\MinkExtension\Context\MinkContext
                 - behatch:json
 #                - behatch:browser

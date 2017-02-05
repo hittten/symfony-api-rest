@@ -35,15 +35,22 @@ class ApiRestContext extends RawMinkContext implements KernelAwareContext
     protected $oauthAuthUrl;
 
     /**
+     * @var string
+     */
+    protected $oauthAuthLoginUrl;
+
+    /**
      * ApiRestContext constructor.
      *
      * @param string $oauthTokenUrl
      * @param string $oauthAuthUrl
+     * @param string $oauthAuthLoginUrl
      */
-    public function __construct($oauthTokenUrl, $oauthAuthUrl)
+    public function __construct($oauthTokenUrl, $oauthAuthUrl, $oauthAuthLoginUrl)
     {
         $this->oauthTokenUrl = $oauthTokenUrl;
         $this->oauthAuthUrl = $oauthAuthUrl;
+        $this->oauthAuthLoginUrl = $oauthAuthLoginUrl;
     }
 
     /**
@@ -92,45 +99,53 @@ class ApiRestContext extends RawMinkContext implements KernelAwareContext
     }
 
     /**
-     * @When /^I go to logout page$/
+     * @Given /^I am authenticated with the user (.*) and password (.*) on the client (.*) from (.*)$/
+     *
+     * @param string $username
+     * @param string $password
+     * @param string $clientId
+     * @param string $redirectUri
+     */
+    public function authenticateInOauth($username, $password, $clientId, $redirectUri)
+    {
+        $this->authenticateInOauthForm($username, $password, $clientId, 'token', $redirectUri);
+        $this->authorizeClient();
+        $this->setOauthTokenFromCurrentUrl();
+    }
+
+    /**
+     * @When /^I visit login page$/
      *
      * @return DocumentElement
      */
-    public function logoutForm()
+    public function loginPage()
     {
         $browser = $this->getSession();
+        $browser->visit($this->locatePath($this->oauthAuthLoginUrl));
 
         return $browser->getPage();
     }
 
     /**
-     * @Given /^I am authenticate with the user (.*) and password (.*) on the client (.*) and secret (.*) with type (.*)$/
+     * @Then /^I take the token from current url$/
      *
-     * @param string $username
-     * @param string $password
-     * @param string $clientId
-     * @param string $clientSecret
-     * @param string $grantType
-     *
-     * @return DocumentElement
+     * @throws \Exception
      */
-    public function authenticateInOauth($username, $password, $clientId, $clientSecret, $grantType)
+    public function setOauthTokenFromCurrentUrl()
     {
-        $body = json_encode([
-            "client_id" => $clientId,
-            "client_secret" => $clientSecret,
-            "grant_type" => $grantType,
-            "username" => $username,
-            "password" => $password,
-        ]);
+        $url = $this->getSession()->getCurrentUrl();
+        parse_str(parse_url($url, PHP_URL_FRAGMENT), $queryParams);
+        if (null == $queryParams) {
+            parse_str(parse_url($url, PHP_URL_QUERY), $queryParams);
+        }
+        if (isset($queryParams['error'])) {
+            throw new \Exception("Error: {$queryParams['error']}");
+        }
+        if (!isset($queryParams['access_token'])) {
+            throw new \Exception("Can not take token from $url");
+        }
 
-        $body = new PyStringNode($body, 0);
-        $documentElement = $this->sendRequestWithJsonBody('POST', $this->oauthTokenUrl, $body);
-
-        $content = json_decode($documentElement->getContent(), true);
-        $this->setOauthToken($content['access_token']);
-
-        return $documentElement;
+        $this->setOauthToken($queryParams['access_token']);
     }
 
     /**
@@ -183,15 +198,35 @@ class ApiRestContext extends RawMinkContext implements KernelAwareContext
     }
 
     /**
-     * @Then /^I authorize the client by clicking in (.*) button$/
-     *
-     * @param string $button
+     * @Then /^I authorize the client$/
      *
      * @throws \Exception
      */
-    public function pressButton($button)
+    public function authorizeClient()
     {
-        $this->getSession()->getPage()->pressButton($button);
+        $this->getSession()->getPage()->pressButton("Allow");
+    }
+
+    /**
+     * @Then /^I deauthorize the client$/
+     *
+     * @throws \Exception
+     */
+    public function deauthorizeClient()
+    {
+        $this->getSession()->getPage()->pressButton("Deny");
+    }
+
+    /**
+     * @Then /^I click (.*) link$/
+     *
+     * @param string $link
+     *
+     * @throws \Exception
+     */
+    public function clickLink($link)
+    {
+        $this->getSession()->getPage()->clickLink($link);
     }
 
     /**
@@ -216,28 +251,6 @@ class ApiRestContext extends RawMinkContext implements KernelAwareContext
         $currentUrl = $this->getSession()->getCurrentUrl();
         $message = sprintf('Current URL is "%s", but "%s" expected.', $currentUrl, $url);
         $this->assert(($currentUrl == $url), $message);
-    }
-
-    /**
-     * @Then /^I take the token from current url$/
-     *
-     * @throws \Exception
-     */
-    public function setOauthTokenFromCurrentUrl()
-    {
-        $url = $this->getSession()->getCurrentUrl();
-        parse_str(parse_url($url, PHP_URL_FRAGMENT), $queryParams);
-        if (null == $queryParams) {
-            parse_str(parse_url($url, PHP_URL_QUERY), $queryParams);
-        }
-        if (isset($queryParams['error'])) {
-            throw new \Exception("Error: {$queryParams['error']}");
-        }
-        if (!isset($queryParams['access_token'])) {
-            throw new \Exception("Can not take token from $url");
-        }
-
-        $this->setOauthToken($queryParams['access_token']);
     }
 
     private function assert($condition, $message)

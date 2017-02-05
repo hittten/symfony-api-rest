@@ -25,24 +25,22 @@ AppBundle\Entity\User:
         enabled: true
 
 AppBundle\Entity\Client:
-    oauth_client_all:
-        randomId: randomid_all
-        secret: secret_all
+    oauth_client:
+        randomId: client
+        secret: secret
         redirectUris:
-            - http://symfony.api.dev      # used with apache
-            - http://localhost:3000       # used with localhost gulp server
-            - http://symfony.api.dev:3000 # used with vagrant gulp server
+            - http://localhost:3000
         allowedGrantTypes: ['client_credentials', 'authorization_code', 'password', 'refresh_token', 'token']
 
 AppBundle\Entity\AccessToken:
     oauth_access_token_admin:
-        client: '@oauth_client_all'
+        client: '@oauth_client'
         user: '@admin'
         token: "admin_token"
         expiresAt: 2147483647
         scope: null
     oauth_access_token_user:
-        client: '@oauth_client_all'
+        client: '@oauth_client'
         user: '@user'
         token: "user_token"
         expiresAt: 2147483647
@@ -50,7 +48,7 @@ AppBundle\Entity\AccessToken:
 
 AppBundle\Entity\RefreshToken:
     oauth_refresh_token_admin:
-        client: '@oauth_client_all'
+        client: '@oauth_client'
         user: '@admin'
         token: "admin_refresh_token"
         expiresAt: 2147483647
@@ -58,7 +56,7 @@ AppBundle\Entity\RefreshToken:
 
 AppBundle\Entity\AuthCode:
     oauth_auth_code_admin:
-        client: '@oauth_client_all'
+        client: '@oauth_client'
         token: "code_token"
         redirectUri: http://localhost:3000
         expiresAt: 2147483647
