@@ -230,6 +230,16 @@ class ApiRestContext extends RawMinkContext implements KernelAwareContext
     }
 
     /**
+     * @Then /^the page should contain "([^"]*)"$/
+     *
+     * @param string $text
+     */
+    public function thePageContains($text)
+    {
+        $this->assertSession()->responseContains($text);
+    }
+
+    /**
      * @Then /^the current url should match (.*)$/
      *
      * @param string $pattern

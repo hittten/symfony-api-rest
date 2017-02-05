@@ -45,6 +45,11 @@ AppBundle\Entity\AccessToken:
         token: "user_token"
         expiresAt: 2147483647
         scope: null
+    oauth_access_token_client:
+        client: '@oauth_client'
+        token: "client_token"
+        expiresAt: 2147483647
+        scope: null
 
 AppBundle\Entity\RefreshToken:
     oauth_refresh_token_admin:
