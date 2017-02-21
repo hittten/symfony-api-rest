@@ -31,4 +31,8 @@ monolog:
         #    level:  info
 
 swiftmailer:
-    delivery_address: '%app.webmaster_email%'
+    delivery_address: '%mailer_delivery_address%'
+
+doctrine:
+    dbal:
+        dbname: '%database_name%_dev'
