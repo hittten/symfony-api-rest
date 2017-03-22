@@ -12,7 +12,7 @@ use Behat\Symfony2Extension\Context\KernelDictionary;
 use Symfony\Bundle\FrameworkBundle\Client;
 
 /**
- * Class ApiRestContext
+ * Class RestContext
  *
  * @package AppBundle\Features\Context
  *
@@ -20,7 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Client;
  *
  * @author Gilberto López Ambrosino <gilberto.amb@gmail.com>
  */
-class ApiRestContext extends RawMinkContext implements KernelAwareContext
+class RestContext extends RawMinkContext implements KernelAwareContext
 {
     use KernelDictionary;
 
@@ -56,17 +56,25 @@ class ApiRestContext extends RawMinkContext implements KernelAwareContext
     /**
      * @return Client
      *
-     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
     public function getClient()
     {
         $driver = $this->getSession()->getDriver();
 
         if (!$driver instanceof BrowserKitDriver) {
-            throw new \Exception(sprintf('Expects BrowserKitDriver instance, %s given', get_class($driver)));
+            throw new \InvalidArgumentException(sprintf('Expected BrowserKitDriver instance, "%s" instance obtained', get_class($driver)));
         }
 
         return $driver->getClient();
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function prepare()
+    {
+        $this->getClient()->setServerParameter('HTTP_AUTHORIZATION', '');
     }
 
     /**
