@@ -3,31 +3,28 @@
 namespace AppBundle\Entity;
 
 use FOS\OAuthServerBundle\Entity\RefreshToken as BaseRefreshToken;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
- * RefreshToken
+ * Class RefreshToken
  *
- * @ORM\Table(name="user_refresh_token")
- * @ORM\Entity
+ * @package AppBundle\Entity
+ *
+ * @author Gilberto López Ambrosino <gilberto.amb@gmail.com>
  */
 class RefreshToken extends BaseRefreshToken
 {
     /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @var integer
      */
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Client")
-     * @ORM\JoinColumn(nullable=false)
+     * @var Client
      */
     protected $client;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @var User
      */
     protected $user;
 }

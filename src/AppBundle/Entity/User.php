@@ -3,66 +3,47 @@
 namespace AppBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
-use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serializer;
 
 /**
- * User
+ * Class User
  *
- * @ORM\Table(name="user")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
- * @ORM\HasLifecycleCallbacks()
+ * @package AppBundle\Entity
  *
- * @Serializer\ExclusionPolicy("ALL")
- * @Serializer\XmlRoot("user")
+ * @author Gilberto López Ambrosino <gilberto.amb@gmail.com>
  */
 class User extends BaseUser implements ResourceInterface
 {
     use ResourceTrait;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @var integer
      */
     protected $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="first_name", type="string", length=255, nullable=false)
-     *
-     * @Serializer\Type("string")
-     * @Serializer\Expose()
      */
     protected $firstName;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="last_name", type="string", length=255, nullable=false)
-     *
-     * @Serializer\Type("string")
-     * @Serializer\Expose()
      */
     protected $lastName;
 
     /**
-     * User constructor.
+     * @return integer
      */
-    public function __construct()
+    public function getId()
     {
-        parent::__construct();
-        // your own logic
+        return $this->id;
     }
 
     /**
      * @param string $firstName
-     * @return User
+     *
+     * @return $this
      */
-    public function setFirstName(string $firstName): User
+    public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
 
@@ -72,16 +53,17 @@ class User extends BaseUser implements ResourceInterface
     /**
      * @return string
      */
-    public function getFirstName(): string
+    public function getFirstName()
     {
         return $this->firstName;
     }
 
     /**
      * @param string $lastName
-     * @return User
+     *
+     * @return $this
      */
-    public function setLastName(string $lastName): User
+    public function setLastName($lastName)
     {
         $this->lastName = $lastName;
 
@@ -91,7 +73,7 @@ class User extends BaseUser implements ResourceInterface
     /**
      * @return string
      */
-    public function getLastName(): string
+    public function getLastName()
     {
         return $this->lastName;
     }

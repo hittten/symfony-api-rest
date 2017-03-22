@@ -6,6 +6,7 @@ namespace AppBundle\Entity;
  * Interface ResourceInterface
  *
  * @package AppBundle\Entity
+ *
  * @author Gilberto López Ambrosino <gilberto.amb@gmail.com>
  */
 interface ResourceInterface

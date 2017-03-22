@@ -6,59 +6,53 @@ namespace AppBundle\Entity;
  * Class ResourceTrait
  *
  * @package AppBundle\Entity
+ *
  * @author Gilberto López Ambrosino <gilberto.amb@gmail.com>
  */
 trait ResourceTrait
 {
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime", nullable=false)
-     *
-     * @Serializer\Type("DateTime")
-     * @Serializer\Expose()
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=false)
-     *
-     * @Serializer\Type("DateTime")
-     * @Serializer\Expose()
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
-     * @ORM\PrePersist()
+     * @return $this
      */
     public function setCreatedAt()
     {
         $this->createdAt = new \DateTime();
+
+        return $this;
     }
 
     /**
      * @return \DateTime
      */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt()
     {
         return $this->createdAt;
     }
 
     /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
+     * @return $this
      */
     public function setUpdatedAt()
     {
         $this->updatedAt = new \DateTime();
+
+        return $this;
     }
 
     /**
      * @return \DateTime
      */
-    public function getUpdatedAt(): \DateTime
+    public function getUpdatedAt()
     {
         return $this->updatedAt;
     }

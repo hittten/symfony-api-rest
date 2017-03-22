@@ -1,0 +1,15 @@
+AppBundle\Entity\AccessToken:
+    type: entity
+    id:
+        id:
+            id: true
+            type: integer
+            generator:
+                strategy: AUTO
+    manyToOne:
+        client:
+            targetEntity: Client
+            joinColumn:
+                nullable: false
+        user:
+            targetEntity: User

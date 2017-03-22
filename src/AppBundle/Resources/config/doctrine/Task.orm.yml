@@ -1,0 +1,47 @@
+AppBundle\Entity\Task:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\TaskRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 255
+        number:
+            type: integer
+        nullable:
+            type: string
+            length: 255
+            nullable: true
+        uniqueValue:
+            type: string
+            length: 255
+            unique: true
+            column: unique_value
+        dateTime:
+            type: datetime
+        time:
+            type: time
+        floatValue:
+            type: float
+            column: float_value
+        decimalValue:
+            type: string
+            length: 255
+            column: decimal_value
+        array:
+            type: array
+        simpleArray:
+            type: simple_array
+            column: simple_array
+        jsonArray:
+            type: json_array
+            column: json_array
+        boolean:
+            type: boolean
+    lifecycleCallbacks: {  }
