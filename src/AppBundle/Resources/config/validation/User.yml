@@ -1,0 +1,22 @@
+AppBundle\Entity\User:
+    properties:
+        firstName:
+            - NotBlank:
+                message: 'fos_user.first_name.blank'
+                groups: ['Registration', 'Profile']
+            - Length:
+                min: 3
+                max: 60
+                minMessage: 'fos_user.first_name.short'
+                maxMessage: 'fos_user.first_name.long'
+                groups: ['Registration', 'Profile']
+        lastName:
+            - NotBlank:
+                message: 'fos_user.last_name.blank'
+                groups: ['Registration', 'Profile']
+            - Length:
+                min: 3
+                max: 60
+                minMessage: 'fos_user.last_name.short'
+                maxMessage: 'fos_user.last_name.long'
+                groups: ['Registration', 'Profile']

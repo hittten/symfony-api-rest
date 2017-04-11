@@ -2,6 +2,15 @@
 #    type:     rest
 #    resource: "@AppBundle/Controller/Admin/AdminUsersController.php"
 
+post_users:
+    path: /users
+    defaults: { _controller: AppBundle:Registration:register }
+    methods: [POST]
+
 users:
     type:     rest
     resource: "@AppBundle/Controller/UsersController.php"
+
+tasks:
+    type:     rest
+    resource: "@AppBundle/Controller/TaskController.php"

@@ -1,0 +1,2 @@
+include:
+    - ../../../AppBundle/DataFixtures/ORM/fixtures.yml

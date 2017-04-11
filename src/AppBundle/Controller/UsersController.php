@@ -72,12 +72,28 @@ class UsersController extends FOSRestController
     }
 
     /**
-     * @param Request $request
-     *
-     * @return Request
+     * @return User
      */
-    public function postUsersAction(Request $request)
+    public function patchMeAction()
     {
-        return $request;
+        $manager = $this->getDoctrine()->getManager();
+        $user = $this->getMeAction();
+
+        if (null === $user || !$user->isEnabled()) {
+            throw new NotFoundHttpException('Resource not found');
+        }
+
+        return $user;
+        return $this->getUser();
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $service
+     */
+    public function loginAction(Request $request, $service)
+    {
+        echo $service;
+        echo "<pre>".print_r($_GET,true)."<pre>";die;
     }
 }

@@ -26,18 +26,19 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+            anonymous: true
 
         doc:
             pattern: ^/doc$
             http_basic:
                 realm: "Secured area"
-
+#
         oauth_token:
             pattern:    ^/oauth/v2/token
             security:   false
 
         oauth_authorize:
-            pattern:    ^/oauth/v2/auth
+            pattern:    ^/oauth/v2/auth|^/oauth/v2/user
             form_login:
                 provider: fos_userbundle
                 login_path: '%oauth_auth_login_url%'
@@ -47,13 +48,30 @@ security:
                 target: '%oauth_auth_login_url%'
             anonymous:    true
 
-        api:
-            pattern:    ^/
-            fos_oauth:  true
-            stateless:  true
-            security:   true
-            anonymous:  false
+        secured_area:
+#            pattern: ^/login
+            anonymous: ~
+            oauth:
+                resource_owners:
+                    facebook:           "/login/check-facebook"
+#                    google:             "/login/check-google"
+#                    my_custom_provider: "/login/check-custom"
+#                    my_github:          "/login/check-github"
+                login_path:        /login/
+                failure_path:      /login/
+                oauth_user_provider:
+                    service: hwi_oauth.user.provider.entity
+#
+#        api:
+#            pattern:    ^/
+#            fos_oauth:  true
+#            stateless:  true
+#            security:   true
+#            anonymous:  false
 
     access_control:
-        - { path: ^/oauth/v2/auth_login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, roles: [ IS_AUTHENTICATED_FULLY ] }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/oauth/v2/auth_login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/oauth/v2/user/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/oauth/v2/user/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+#        - { path: ^/, roles: [ IS_AUTHENTICATED_FULLY ]

@@ -11,6 +11,10 @@ AppBundle\Entity\User:
             generator:
                 strategy: AUTO
     fields:
+        facebookId:
+            type: string
+            length: 255
+            nullable: true
         firstName:
             type: string
             length: 255

@@ -23,6 +23,16 @@ class User extends BaseUser implements ResourceInterface
     /**
      * @var string
      */
+    protected $facebookId;
+
+    /**
+     * @var string
+     */
+    private $facebookAccessToken;
+
+    /**
+     * @var string
+     */
     protected $firstName;
 
     /**
@@ -76,5 +86,45 @@ class User extends BaseUser implements ResourceInterface
     public function getLastName()
     {
         return $this->lastName;
+    }
+
+    /**
+     * @param string $facebookId
+     *
+     * @return User
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebookId = $facebookId;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFacebookId()
+    {
+        return $this->facebookId;
+    }
+
+    /**
+     * @param string $facebookAccessToken
+     *
+     * @return User
+     */
+    public function setFacebookAccessToken($facebookAccessToken)
+    {
+        $this->facebookAccessToken = $facebookAccessToken;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFacebookAccessToken()
+    {
+        return $this->facebookAccessToken;
     }
 }

@@ -1,0 +1,11 @@
+fos_user:
+    form:
+        extra_fields: 'Este formulario no debe contener campos adicionales: "{{extra_fields}}"'
+    first_name:
+        blank: 'Por favor, ingrese un nombre.'
+        short: 'El nombre es demasiado corto. Debe tener caracteres {{ limit }} o más.'
+        long: 'El nombre es demasiado largo. Debe tener caracteres {{ limit }} o menos.'
+    last_name:
+        blank: 'Por favor, ingrese un apellido.'
+        short: 'El apellido es demasiado corto. Debe tener caracteres {{ limit }} o más.'
+        long: 'El apellido de usuario es demasiado largo. Debe tener caracteres {{ limit }} o menos.'

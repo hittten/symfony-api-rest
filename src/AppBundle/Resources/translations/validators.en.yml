@@ -1,0 +1,11 @@
+fos_user:
+    form:
+        extra_fields: 'This form should not contain extra fields: "{{ extra_fields }}"'
+    first_name:
+        blank: 'Please enter a first name.'
+        short: 'The first name is too short. It should have {{ limit }} characters or more.'
+        long: 'The first name is too long. It should have {{ limit }} characters or less.'
+    last_name:
+        blank: 'Please enter a last name.'
+        short: 'The last name is too short. It should have {{ limit }} characters or more.'
+        long: 'The last name is too long. It should have {{ limit }} characters or less.'
